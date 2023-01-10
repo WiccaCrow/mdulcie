@@ -1,0 +1,55 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: wil-playground
+  namespace: dev
+  annotations:
+    IOT/owner: "m&m's"
+  labels:
+    p3: dev
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8888
+  selector:
+    p3: dev
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: wil-playground
+  namespace: dev
+  annotations:
+    IOT/owner: "m&m's"
+  labels:
+    p3: dev
+spec:
+  selector:
+    matchLabels:
+      p3: dev
+  template:
+    metadata:
+      labels:
+        p3: dev
+    spec:
+      containers:
+      - name: dev-container
+        image: wil42/playground:v1
+        ports:
+        - containerPort: 8888
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8888
+          initialDelaySeconds: 2
+          periodSeconds: 3
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8888
+          initialDelaySeconds: 4
+          periodSeconds: 30
+        securityContext:
+          readOnlyRootFilesystem: true
