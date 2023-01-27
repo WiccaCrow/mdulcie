@@ -4,11 +4,3 @@ metadata:
   name: dev
   annotations:
     IOT/owner: "m&m's"
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: argocd
-  annotations:
-    IOT/owner: "m&m's"
-    
